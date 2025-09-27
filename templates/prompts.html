@@ -1,0 +1,266 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-10 mx-auto">
+        <div class="text-center mb-5">
+            <h1 class="display-5">
+                <i class="fas fa-lightbulb me-2 text-warning"></i>Creative Writing Prompts
+            </h1>
+            <p class="lead">Break through writer's block with AI-generated prompts tailored to your style</p>
+        </div>
+
+        <!-- Prompt Generator -->
+        <div class="card mb-4">
+            <div class="card-header bg-warning text-dark">
+                <h3 class="card-title mb-0">
+                    <i class="fas fa-magic me-2"></i>Generate Writing Prompt
+                </h3>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-12">
+                        <label class="form-label">Prompt Type</label>
+                        <div class="d-flex gap-2 flex-wrap">
+                            <button class="btn btn-outline-primary" data-prompt-type="general">
+                                <i class="fas fa-star me-1"></i>General
+                            </button>
+                            <button class="btn btn-outline-success" data-prompt-type="character">
+                                <i class="fas fa-user me-1"></i>Character
+                            </button>
+                            <button class="btn btn-outline-info" data-prompt-type="setting">
+                                <i class="fas fa-map me-1"></i>Setting
+                            </button>
+                            <button class="btn btn-outline-danger" data-prompt-type="conflict">
+                                <i class="fas fa-bolt me-1"></i>Conflict
+                            </button>
+                            <button class="btn btn-outline-warning" data-prompt-type="dialogue">
+                                <i class="fas fa-comments me-1"></i>Dialogue
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="prompt-loading" class="text-center" style="display: none;">
+                    <div class="spinner-border text-warning" role="status">
+                        <span class="visually-hidden">Generating...</span>
+                    </div>
+                    <p class="mt-2">Crafting the perfect prompt for you...</p>
+                </div>
+
+                <div id="prompt-result" class="result-container" style="display: none;">
+                    <div class="alert prompt-card">
+                        <h5 class="alert-heading">
+                            <i class="fas fa-feather-alt me-2"></i>Your Writing Prompt:
+                        </h5>
+                        <div id="prompt-content" class="prompt-content"></div>
+                        <hr>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">
+                                Type: <span id="prompt-type-used" class="fw-bold"></span> | 
+                                Generated at <span id="prompt-timestamp"></span>
+                            </small>
+                            <button id="save-prompt-btn" class="btn btn-sm btn-outline-primary">
+                                <i class="fas fa-save me-1"></i>Save Prompt
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Writing Exercises -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-dumbbell me-2"></i>Daily Writing Exercises
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="exercise-item mb-3">
+                            <h6 class="text-primary">
+                                <i class="fas fa-clock me-1"></i>5-Minute Sprint
+                            </h6>
+                            <p class="small">Write continuously for 5 minutes without stopping. Don't worry about grammar or structure - just let your thoughts flow.</p>
+                        </div>
+                        
+                        <div class="exercise-item mb-3">
+                            <h6 class="text-primary">
+                                <i class="fas fa-eye me-1"></i>Observation Exercise
+                            </h6>
+                            <p class="small">Look around you. Pick one object and write a detailed description using all five senses.</p>
+                        </div>
+                        
+                        <div class="exercise-item mb-3">
+                            <h6 class="text-primary">
+                                <i class="fas fa-random me-1"></i>Word Association
+                            </h6>
+                            <p class="small">Take a random word and write a short story that must include: the word, a character with a secret, and something red.</p>
+                        </div>
+                        
+                        <button class="btn btn-primary btn-sm" data-prompt-type="exercise">
+                            <i class="fas fa-refresh me-1"></i>Get Custom Exercise
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-seedling me-2"></i>Story Starters
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="story-starter mb-3 p-3 bg-light rounded">
+                            <p class="mb-1"><em>"The last thing I expected to find in my grandmother's attic was..."</em></p>
+                        </div>
+                        
+                        <div class="story-starter mb-3 p-3 bg-light rounded">
+                            <p class="mb-1"><em>"Every night at exactly 11:47 PM, the same stranger walks past my window..."</em></p>
+                        </div>
+                        
+                        <div class="story-starter mb-3 p-3 bg-light rounded">
+                            <p class="mb-1"><em>"The email arrived from an address I didn't recognize: my own, from 10 years in the future..."</em></p>
+                        </div>
+                        
+                        <button class="btn btn-success btn-sm" data-prompt-type="starter">
+                            <i class="fas fa-play me-1"></i>Generate Story Starter
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Character Development -->
+        <div class="card mb-4">
+            <div class="card-header bg-info text-white">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-users me-2"></i>Character Development Prompts
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="character-prompt p-3 mb-3 border rounded">
+                            <h6 class="text-info">Backstory Builder</h6>
+                            <p class="small">Create a character who has changed their name three times. What were they running from each time?</p>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="character-prompt p-3 mb-3 border rounded">
+                            <h6 class="text-info">Relationship Dynamics</h6>
+                            <p class="small">Write about two characters who can't stand each other but must work together to achieve a common goal.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="character-prompt p-3 mb-3 border rounded">
+                            <h6 class="text-info">Internal Conflict</h6>
+                            <p class="small">Develop a character whose greatest strength is also their greatest weakness.</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="text-center">
+                    <button class="btn btn-info" data-prompt-type="character">
+                        <i class="fas fa-user-plus me-2"></i>Generate Character Prompt
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- World Building -->
+        <div class="card mb-4">
+            <div class="card-header bg-secondary text-white">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-globe me-2"></i>World Building Exercises
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="text-secondary">
+                            <i class="fas fa-map-marked-alt me-1"></i>Setting Deep Dive
+                        </h6>
+                        <ul class="small">
+                            <li>What does this place smell like?</li>
+                            <li>What sounds are always present?</li>
+                            <li>Who holds power here and how do they maintain it?</li>
+                            <li>What's forbidden in this society?</li>
+                            <li>What do people do for entertainment?</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <h6 class="text-secondary">
+                            <i class="fas fa-history me-1"></i>Historical Layers
+                        </h6>
+                        <ul class="small">
+                            <li>What event shaped this place the most?</li>
+                            <li>What ruins or remnants tell old stories?</li>
+                            <li>What traditions have been lost?</li>
+                            <li>Who are the legendary figures?</li>
+                            <li>What's the biggest lie people believe about their history?</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="text-center mt-3">
+                    <button class="btn btn-secondary" data-prompt-type="setting">
+                        <i class="fas fa-compass me-2"></i>Generate Setting Prompt
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tips Section -->
+        <div class="card border-warning">
+            <div class="card-header bg-warning text-dark">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-tips me-2"></i>Making the Most of Writing Prompts
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6><i class="fas fa-stopwatch me-2 text-success"></i>Set a Timer</h6>
+                        <p class="small">Give yourself a specific time limit. This prevents overthinking and encourages flow.</p>
+                        
+                        <h6><i class="fas fa-ban me-2 text-danger"></i>No Editing</h6>
+                        <p class="small">Don't edit while writing from a prompt. Focus on getting ideas down first.</p>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <h6><i class="fas fa-surprise me-2 text-info"></i>Embrace the Unexpected</h6>
+                        <p class="small">Let the prompt take you somewhere you didn't plan to go. Some of the best ideas come from surprises.</p>
+                        
+                        <h6><i class="fas fa-expand me-2 text-primary"></i>Build on Success</h6>
+                        <p class="small">If a prompt sparks something great, save it and develop it into a larger piece.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add save prompt functionality
+    const savePromptBtn = document.getElementById('save-prompt-btn');
+    if (savePromptBtn) {
+        savePromptBtn.addEventListener('click', function() {
+            const content = document.getElementById('prompt-content').textContent;
+            saveToLocalStorage('writing-prompts', content);
+            showNotification('Prompt saved locally!', 'success');
+        });
+    }
+});
+</script>
+{% endblock %}

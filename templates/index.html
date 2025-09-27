@@ -1,0 +1,237 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-12">
+        <div class="hero-section bg-gradient p-5 rounded mb-5 text-white">
+            <div class="text-center">
+                <h1 class="display-4 mb-3">
+                    <i class="fas fa-magic me-3"></i>Unleash Your Creative Voice
+                </h1>
+                <p class="lead mb-4">Generate compelling story ideas, detailed plots, and authentic dialogue while maintaining your unique writing style</p>
+                <div class="d-flex justify-content-center gap-3 flex-wrap">
+                    <button class="btn btn-light btn-lg" onclick="scrollToSection('story-ideas')">
+                        <i class="fas fa-lightbulb me-2"></i>Story Ideas
+                    </button>
+                    <button class="btn btn-outline-light btn-lg" onclick="scrollToSection('plot-generator')">
+                        <i class="fas fa-sitemap me-2"></i>Plot Outlines
+                    </button>
+                    <button class="btn btn-light btn-lg" onclick="scrollToSection('dialogue-generator')">
+                        <i class="fas fa-comments me-2"></i>Dialogue
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Story Ideas Generator -->
+<div id="story-ideas" class="row mb-5">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h3 class="card-title mb-0">
+                    <i class="fas fa-lightbulb me-2"></i>Story Ideas Generator
+                </h3>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label for="idea-genre" class="form-label">Genre</label>
+                        <select id="idea-genre" class="form-select">
+                            <option value="">Random Genre</option>
+                            {% for genre in genres %}
+                            <option value="{{ genre }}">{{ genre }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="idea-style" class="form-label">Writing Style</label>
+                        <select id="idea-style" class="form-select">
+                            <option value="">Random Style</option>
+                            {% for style in styles %}
+                            <option value="{{ style }}">{{ style }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="idea-theme" class="form-label">Theme (Optional)</label>
+                        <input type="text" id="idea-theme" class="form-control" placeholder="e.g., redemption, love, betrayal">
+                    </div>
+                </div>
+                <div class="d-flex gap-2 mb-3">
+                    <button id="generate-idea-btn" class="btn btn-primary">
+                        <i class="fas fa-magic me-2"></i>Generate Story Idea
+                    </button>
+                    <button id="save-idea-btn" class="btn btn-outline-secondary" style="display: none;">
+                        <i class="fas fa-save me-2"></i>Save Idea
+                    </button>
+                </div>
+                <div id="idea-result" class="result-container" style="display: none;">
+                    <div class="alert alert-success">
+                        <h5 class="alert-heading">Your Story Idea:</h5>
+                        <div id="idea-content"></div>
+                        <hr>
+                        <small class="text-muted">Generated at <span id="idea-timestamp"></span></small>
+                    </div>
+                </div>
+                <div id="idea-loading" class="text-center" style="display: none;">
+                    <div class="spinner-border text-primary" role="status">
+                        <span class="visually-hidden">Generating...</span>
+                    </div>
+                    <p class="mt-2">Crafting your unique story idea...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Plot Generator -->
+<div id="plot-generator" class="row mb-5">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h3 class="card-title mb-0">
+                    <i class="fas fa-sitemap me-2"></i>Plot Outline Generator
+                </h3>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label for="plot-idea" class="form-label">Story Idea</label>
+                        <textarea id="plot-idea" class="form-control" rows="3" placeholder="Enter your story idea or use one generated above..."></textarea>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="plot-structure" class="form-label">Plot Structure</label>
+                        <select id="plot-structure" class="form-select">
+                            <option value="Three-Act Structure">Three-Act Structure</option>
+                            <option value="Hero's Journey">Hero's Journey</option>
+                            <option value="Save the Cat">Save the Cat</option>
+                        </select>
+                        <small class="form-text text-muted">Choose a story structure template</small>
+                    </div>
+                </div>
+                <div class="d-flex gap-2 mb-3">
+                    <button id="generate-plot-btn" class="btn btn-success">
+                        <i class="fas fa-cogs me-2"></i>Generate Plot Outline
+                    </button>
+                    <button id="save-plot-btn" class="btn btn-outline-secondary" style="display: none;">
+                        <i class="fas fa-save me-2"></i>Save Plot
+                    </button>
+                </div>
+                <div id="plot-result" class="result-container" style="display: none;">
+                    <div class="alert alert-success">
+                        <h5 class="alert-heading">Your Plot Outline:</h5>
+                        <div id="plot-content"></div>
+                        <hr>
+                        <small class="text-muted">Structure: <span id="plot-structure-used"></span> | Generated at <span id="plot-timestamp"></span></small>
+                    </div>
+                </div>
+                <div id="plot-loading" class="text-center" style="display: none;">
+                    <div class="spinner-border text-success" role="status">
+                        <span class="visually-hidden">Generating...</span>
+                    </div>
+                    <p class="mt-2">Creating your detailed plot outline...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Dialogue Generator -->
+<div id="dialogue-generator" class="row mb-5">
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-header bg-info text-white">
+                <h3 class="card-title mb-0">
+                    <i class="fas fa-comments me-2"></i>Dialogue Generator
+                </h3>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-md-4">
+                        <label for="dialogue-characters" class="form-label">Characters</label>
+                        <textarea id="dialogue-characters" class="form-control" rows="2" placeholder="Describe the characters in this scene..."></textarea>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="dialogue-context" class="form-label">Scene Context</label>
+                        <textarea id="dialogue-context" class="form-control" rows="2" placeholder="What's happening in this scene?"></textarea>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="dialogue-mood" class="form-label">Mood/Tone</label>
+                        <select id="dialogue-mood" class="form-select">
+                            <option value="neutral">Neutral</option>
+                            <option value="tense">Tense</option>
+                            <option value="romantic">Romantic</option>
+                            <option value="humorous">Humorous</option>
+                            <option value="dramatic">Dramatic</option>
+                            <option value="mysterious">Mysterious</option>
+                            <option value="confrontational">Confrontational</option>
+                            <option value="emotional">Emotional</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="d-flex gap-2 mb-3">
+                    <button id="generate-dialogue-btn" class="btn btn-info">
+                        <i class="fas fa-theater-masks me-2"></i>Generate Dialogue
+                    </button>
+                    <button id="save-dialogue-btn" class="btn btn-outline-secondary" style="display: none;">
+                        <i class="fas fa-save me-2"></i>Save Dialogue
+                    </button>
+                </div>
+                <div id="dialogue-result" class="result-container" style="display: none;">
+                    <div class="alert alert-info">
+                        <h5 class="alert-heading">Your Dialogue Scene:</h5>
+                        <div id="dialogue-content"></div>
+                        <hr>
+                        <small class="text-muted">Mood: <span id="dialogue-mood-used"></span> | Generated at <span id="dialogue-timestamp"></span></small>
+                    </div>
+                </div>
+                <div id="dialogue-loading" class="text-center" style="display: none;">
+                    <div class="spinner-border text-info" role="status">
+                        <span class="visually-hidden">Generating...</span>
+                    </div>
+                    <p class="mt-2">Writing authentic dialogue for your characters...</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Tips -->
+<div class="row">
+    <div class="col-lg-12">
+        <div class="card border-warning">
+            <div class="card-header bg-warning text-dark">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-tips me-2"></i>Quick Tips for Better Results
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <h6><i class="fas fa-user-edit me-2 text-primary"></i>Customize Your Profile</h6>
+                        <p class="small">Set up your writing preferences to get AI suggestions that match your unique voice and style.</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h6><i class="fas fa-layer-group me-2 text-success"></i>Build Iteratively</h6>
+                        <p class="small">Start with a story idea, develop it into a plot, then generate specific dialogue scenes.</p>
+                    </div>
+                    <div class="col-md-4">
+                        <h6><i class="fas fa-edit me-2 text-info"></i>Edit and Refine</h6>
+                        <p class="small">Use AI suggestions as starting points. Edit and refine to match your vision perfectly.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+function scrollToSection(sectionId) {
+    document.getElementById(sectionId).scrollIntoView({ behavior: 'smooth' });
+}
+</script>
+{% endblock %}
