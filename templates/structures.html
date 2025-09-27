@@ -1,0 +1,246 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-10 mx-auto">
+        <div class="text-center mb-5">
+            <h1 class="display-5">
+                <i class="fas fa-sitemap me-2 text-primary"></i>Plot Structure Guide
+            </h1>
+            <p class="lead">Choose the right narrative framework for your story</p>
+        </div>
+
+        <!-- Structure Comparison -->
+        {% for structure_name, structure_info in structures.items() %}
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h3 class="card-title mb-0">
+                    <i class="fas fa-book me-2"></i>{{ structure_name }}
+                </h3>
+            </div>
+            <div class="card-body">
+                <p class="lead">{{ structure_info.description }}</p>
+                
+                <div class="row">
+                    <div class="col-md-12">
+                        <h5 class="mb-3">
+                            <i class="fas fa-list-ol me-2 text-secondary"></i>Structure Breakdown
+                        </h5>
+                        
+                        <div class="structure-timeline">
+                            {% for act in structure_info.acts %}
+                            <div class="structure-step">
+                                <div class="d-flex align-items-center">
+                                    <div class="step-number bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 30px; height: 30px; font-size: 0.875rem;">
+                                        {{ loop.index }}
+                                    </div>
+                                    <div class="flex-grow-1">
+                                        <h6 class="mb-1">{{ act }}</h6>
+                                        {% if structure_name == "Three-Act Structure" %}
+                                            {% if loop.index == 1 %}
+                                            <p class="small text-muted mb-0">Introduce characters, world, and central conflict</p>
+                                            {% elif loop.index == 2 %}
+                                            <p class="small text-muted mb-0">Build tension, develop characters, escalate conflict</p>
+                                            {% elif loop.index == 3 %}
+                                            <p class="small text-muted mb-0">Climax, resolution, and character transformation</p>
+                                            {% endif %}
+                                        {% elif structure_name == "Hero's Journey" %}
+                                            {% if loop.index == 1 %}
+                                            <p class="small text-muted mb-0">Hero's normal, comfortable world</p>
+                                            {% elif loop.index == 2 %}
+                                            <p class="small text-muted mb-0">Inciting incident that starts the adventure</p>
+                                            {% elif loop.index == 3 %}
+                                            <p class="small text-muted mb-0">Hero hesitates or refuses the adventure</p>
+                                            {% elif loop.index == 4 %}
+                                            <p class="small text-muted mb-0">Wise figure gives advice or magical item</p>
+                                            {% elif loop.index == 5 %}
+                                            <p class="small text-muted mb-0">Hero commits to the adventure</p>
+                                            {% elif loop.index == 6 %}
+                                            <p class="small text-muted mb-0">Challenges and allies in the new world</p>
+                                            {% elif loop.index == 7 %}
+                                            <p class="small text-muted mb-0">Preparation for the major challenge</p>
+                                            {% elif loop.index == 8 %}
+                                            <p class="small text-muted mb-0">The crisis point of the adventure</p>
+                                            {% elif loop.index == 9 %}
+                                            <p class="small text-muted mb-0">Surviving brings new power or insight</p>
+                                            {% elif loop.index == 10 %}
+                                            <p class="small text-muted mb-0">Hero begins the journey back home</p>
+                                            {% elif loop.index == 11 %}
+                                            <p class="small text-muted mb-0">Final test, often a sacrifice</p>
+                                            {% elif loop.index == 12 %}
+                                            <p class="small text-muted mb-0">Hero returns transformed with wisdom</p>
+                                            {% endif %}
+                                        {% elif structure_name == "Save the Cat" %}
+                                            {% if loop.index == 1 %}
+                                            <p class="small text-muted mb-0">Visual/visceral scene that sets tone</p>
+                                            {% elif loop.index == 2 %}
+                                            <p class="small text-muted mb-0">What the story is really about</p>
+                                            {% elif loop.index == 3 %}
+                                            <p class="small text-muted mb-0">Introduce main character and world</p>
+                                            {% elif loop.index == 4 %}
+                                            <p class="small text-muted mb-0">Inciting incident - life changes</p>
+                                            {% elif loop.index == 5 %}
+                                            <p class="small text-muted mb-0">Should I go? Weighing the decision</p>
+                                            {% elif loop.index == 6 %}
+                                            <p class="small text-muted mb-0">Leaving the old world behind</p>
+                                            {% elif loop.index == 7 %}
+                                            <p class="small text-muted mb-0">Secondary story that echoes theme</p>
+                                            {% elif loop.index == 8 %}
+                                            <p class="small text-muted mb-0">Promise of the premise delivered</p>
+                                            {% elif loop.index == 9 %}
+                                            <p class="small text-muted mb-0">Halfway point - false victory or defeat</p>
+                                            {% elif loop.index == 10 %}
+                                            <p class="small text-muted mb-0">Forces of antagonism tighten grip</p>
+                                            {% elif loop.index == 11 %}
+                                            <p class="small text-muted mb-0">Hero's lowest point</p>
+                                            {% elif loop.index == 12 %}
+                                            <p class="small text-muted mb-0">Moment of reflection and insight</p>
+                                            {% elif loop.index == 13 %}
+                                            <p class="small text-muted mb-0">New plan with renewed vigor</p>
+                                            {% elif loop.index == 14 %}
+                                            <p class="small text-muted mb-0">Climax - battle against main conflict</p>
+                                            {% elif loop.index == 15 %}
+                                            <p class="small text-muted mb-0">Opposite of opening image - transformation</p>
+                                            {% endif %}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        
+                        <div class="mt-3">
+                            <button class="btn btn-outline-primary use-structure-btn" 
+                                    data-structure="{{ structure_name }}">
+                                <i class="fas fa-arrow-right me-2"></i>Use This Structure
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+        <!-- When to Use Each Structure -->
+        <div class="card mb-4">
+            <div class="card-header bg-success text-white">
+                <h3 class="card-title mb-0">
+                    <i class="fas fa-question-circle me-2"></i>Which Structure Should I Choose?
+                </h3>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="recommendation-card p-3 border rounded mb-3">
+                            <h6 class="text-primary">
+                                <i class="fas fa-theater-masks me-2"></i>Three-Act Structure
+                            </h6>
+                            <p class="small"><strong>Best for:</strong> Most fiction, screenplays, straightforward narratives</p>
+                            <p class="small"><strong>Genres:</strong> Drama, Romance, Thriller, Contemporary Fiction</p>
+                            <p class="small"><strong>Why:</strong> Simple, versatile, and familiar to readers</p>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="recommendation-card p-3 border rounded mb-3">
+                            <h6 class="text-success">
+                                <i class="fas fa-dragon me-2"></i>Hero's Journey
+                            </h6>
+                            <p class="small"><strong>Best for:</strong> Adventure stories, character transformation arcs</p>
+                            <p class="small"><strong>Genres:</strong> Fantasy, Science Fiction, Adventure, Coming-of-age</p>
+                            <p class="small"><strong>Why:</strong> Perfect for stories about personal growth and change</p>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <div class="recommendation-card p-3 border rounded mb-3">
+                            <h6 class="text-info">
+                                <i class="fas fa-cat me-2"></i>Save the Cat
+                            </h6>
+                            <p class="small"><strong>Best for:</strong> Commercial fiction, genre novels, screenplays</p>
+                            <p class="small"><strong>Genres:</strong> Commercial fiction, Mystery, Action, Comedy</p>
+                            <p class="small"><strong>Why:</strong> Detailed beat-by-beat guidance for pacing</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Customization Tips -->
+        <div class="card border-warning">
+            <div class="card-header bg-warning text-dark">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-lightbulb me-2"></i>Adapting Structures to Your Story
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6><i class="fas fa-edit me-2 text-primary"></i>Flexibility is Key</h6>
+                        <ul class="small">
+                            <li>Use structures as guides, not rigid rules</li>
+                            <li>Combine elements from different structures</li>
+                            <li>Adjust pacing to match your story's needs</li>
+                            <li>Skip steps that don't serve your narrative</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <h6><i class="fas fa-puzzle-piece me-2 text-success"></i>Genre Considerations</h6>
+                        <ul class="small">
+                            <li>Mystery stories often need careful revelation pacing</li>
+                            <li>Romance requires emotional beats and relationship arcs</li>
+                            <li>Horror benefits from escalating tension patterns</li>
+                            <li>Literary fiction may use looser structures</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="alert alert-info mt-3">
+                    <h6 class="alert-heading">
+                        <i class="fas fa-info-circle me-2"></i>Pro Tip
+                    </h6>
+                    <p class="mb-0">Start with a structure that feels right for your story, then modify it as you write. The best structure is the one that serves your story and characters most effectively.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add event listeners for "Use This Structure" buttons
+    const structureButtons = document.querySelectorAll('.use-structure-btn');
+    
+    structureButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const structureName = this.getAttribute('data-structure');
+            
+            // Store the selected structure in localStorage for use in plot generator
+            localStorage.setItem('selectedStructure', structureName);
+            
+            // Show notification and redirect to plot generator
+            showNotification(`${structureName} selected! Redirecting to plot generator...`, 'success');
+            
+            setTimeout(() => {
+                // If on the same site, redirect to plot generator section
+                window.location.href = '/#plot-generator';
+            }, 1500);
+        });
+    });
+});
+
+// Function to auto-select structure in plot generator if available
+window.addEventListener('load', function() {
+    const selectedStructure = localStorage.getItem('selectedStructure');
+    const plotStructureSelect = document.getElementById('plot-structure');
+    
+    if (selectedStructure && plotStructureSelect) {
+        plotStructureSelect.value = selectedStructure;
+        localStorage.removeItem('selectedStructure'); // Clear after use
+    }
+});
+</script>
+{% endblock %}

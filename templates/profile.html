@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 mx-auto">
+        <div class="profile-section">
+            <div class="text-center mb-4">
+                <h1 class="display-5">
+                    <i class="fas fa-user-edit me-2 text-primary"></i>Your Creative Profile
+                </h1>
+                <p class="lead">Customize your preferences to get AI suggestions that match your unique writing voice</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h3 class="card-title mb-0">
+                    <i class="fas fa-cog me-2"></i>Writing Preferences
+                </h3>
+            </div>
+            <div class="card-body">
+                <form action="{{ url_for('save_profile') }}" method="POST">
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="name" class="form-label">Name/Pen Name</label>
+                            <input type="text" id="name" name="name" class="form-control" 
+                                   value="{{ user_profile.get('name', '') }}" 
+                                   placeholder="How should we address you?">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="writing_style" class="form-label">Primary Writing Style</label>
+                            <select id="writing_style" name="writing_style" class="form-select">
+                                <option value="">Select a style...</option>
+                                {% for style in styles %}
+                                <option value="{{ style }}" {% if user_profile.get('writing_style') == style %}selected{% endif %}>
+                                    {{ style }}
+                                </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Preferred Genres <small class="text-muted">(Select multiple)</small></label>
+                        <div class="row">
+                            {% for genre in genres %}
+                            <div class="col-md-4 col-sm-6 mb-2">
+                                <div class="form-check">
+                                    <input class="form-check-input" type="checkbox" name="genres" 
+                                           value="{{ genre }}" id="genre-{{ loop.index }}"
+                                           {% if genre in user_profile.get('preferred_genres', []) %}checked{% endif %}>
+                                    <label class="form-check-label" for="genre-{{ loop.index }}">
+                                        {{ genre }}
+                                    </label>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="voice_description" class="form-label">Your Writing Voice</label>
+                        <textarea id="voice_description" name="voice_description" class="form-control" rows="3" 
+                                  placeholder="Describe your unique writing voice, tone, and style preferences...">{{ user_profile.get('voice_description', '') }}</textarea>
+                        <small class="form-text text-muted">
+                            This helps the AI understand your preferred tone and style. Be as specific as possible!
+                        </small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="favorite_authors" class="form-label">Favorite Authors/Influences</label>
+                        <input type="text" id="favorite_authors" name="favorite_authors" class="form-control" 
+                               value="{{ user_profile.get('favorite_authors', '') }}"
+                               placeholder="e.g., Stephen King, Jane Austen, Ursula K. Le Guin">
+                        <small class="form-text text-muted">
+                            Comma-separated list of authors whose style influences your writing
+                        </small>
+                    </div>
+
+                    <div class="mb-4">
+                        <label for="themes" class="form-label">Favorite Themes</label>
+                        <input type="text" id="themes" name="themes" class="form-control" 
+                               value="{{ user_profile.get('themes', '') }}"
+                               placeholder="e.g., redemption, love vs. duty, the human condition">
+                        <small class="form-text text-muted">
+                            Common themes you like to explore in your writing
+                        </small>
+                    </div>
+
+                    <div class="d-flex gap-2">
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fas fa-save me-2"></i>Save Profile
+                        </button>
+                        <button type="reset" class="btn btn-outline-secondary">
+                            <i class="fas fa-undo me-2"></i>Reset
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        {% if user_profile %}
+        <div class="card mt-4">
+            <div class="card-header bg-success text-white">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-check-circle me-2"></i>Current Profile Summary
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if user_profile.get('name') %}
+                <p><strong>Name:</strong> {{ user_profile.name }}</p>
+                {% endif %}
+                
+                {% if user_profile.get('writing_style') %}
+                <p><strong>Primary Style:</strong> {{ user_profile.writing_style }}</p>
+                {% endif %}
+                
+                {% if user_profile.get('preferred_genres') %}
+                <p><strong>Preferred Genres:</strong>
+                    {% for genre in user_profile.preferred_genres %}
+                    <span class="preference-tag">{{ genre }}</span>
+                    {% endfor %}
+                </p>
+                {% endif %}
+                
+                {% if user_profile.get('voice_description') %}
+                <p><strong>Writing Voice:</strong> {{ user_profile.voice_description }}</p>
+                {% endif %}
+                
+                {% if user_profile.get('favorite_authors') %}
+                <p><strong>Influences:</strong> {{ user_profile.favorite_authors }}</p>
+                {% endif %}
+                
+                {% if user_profile.get('themes') %}
+                <p><strong>Favorite Themes:</strong> {{ user_profile.themes }}</p>
+                {% endif %}
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Tips for better profiling -->
+        <div class="card mt-4 border-warning">
+            <div class="card-header bg-warning text-dark">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-lightbulb me-2"></i>Tips for Better AI Suggestions
+                </h5>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled">
+                    <li class="mb-2">
+                        <i class="fas fa-check text-success me-2"></i>
+                        <strong>Be Specific:</strong> The more detailed your voice description, the better the AI can match your style
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-check text-success me-2"></i>
+                        <strong>Include Examples:</strong> Mention specific techniques or approaches you prefer
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-check text-success me-2"></i>
+                        <strong>Update Regularly:</strong> Your preferences may evolve - keep your profile current
+                    </li>
+                    <li class="mb-2">
+                        <i class="fas fa-check text-success me-2"></i>
+                        <strong>Experiment:</strong> Try different combinations to see what works best for you
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
