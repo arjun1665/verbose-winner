@@ -1,0 +1,93 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* StoryCraft AI Design System - High Contrast Theme */
+
+@layer base {
+  :root {
+    /* Pure high contrast foundation */
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
+
+    /* Stark card system */
+    --card: 0 0% 5%;
+    --card-foreground: 0 0% 100%;
+
+    /* High contrast modals */
+    --popover: 0 0% 8%;
+    --popover-foreground: 0 0% 100%;
+
+    /* Vibrant cyan primary for maximum visibility */
+    --primary: 180 100% 50%;
+    --primary-foreground: 0 0% 0%;
+
+    /* Strong secondary contrast */
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 0 0% 100%;
+
+    /* Clear muted tones */
+    --muted: 0 0% 10%;
+    --muted-foreground: 0 0% 80%;
+
+    /* Bright accent - hot pink for variety */
+    --accent: 320 100% 50%;
+    --accent-foreground: 0 0% 0%;
+
+    /* High contrast danger */
+    --destructive: 0 100% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Strong borders and inputs */
+    --border: 0 0% 20%;
+    --input: 0 0% 8%;
+    --ring: 180 100% 50%;
+
+    /* Enhanced radius for modern feel */
+    --radius: 0.75rem;
+
+    /* Custom Story Lab high contrast tokens */
+    --story-panel: 0 0% 3%;
+    --story-panel-foreground: 0 0% 100%;
+    --chat-bubble: 180 100% 50%;
+    --chat-bubble-foreground: 0 0% 0%;
+    --upload-zone: 0 0% 8%;
+    --upload-zone-hover: 0 0% 12%;
+    
+    /* High contrast gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(180 100% 50%), hsl(320 100% 50%));
+    --gradient-panel: linear-gradient(180deg, hsl(0 0% 5%), hsl(0 0% 3%));
+    
+    /* Animations and transitions */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+/* Custom Story Lab Components */
+@layer components {
+  .story-panel {
+    @apply bg-gradient-to-b from-card to-card/90 border border-border rounded-xl;
+  }
+  
+  .chat-bubble {
+    @apply bg-primary text-primary-foreground rounded-2xl px-4 py-3 max-w-[85%] shadow-lg;
+  }
+  
+  .upload-zone {
+    @apply border-2 border-dashed border-muted-foreground/50 rounded-xl p-8 text-center transition-all duration-300 hover:border-primary hover:bg-upload-zone-hover cursor-pointer;
+  }
+  
+  .story-input {
+    @apply bg-input border border-border rounded-xl px-4 py-3 text-foreground placeholder:text-muted-foreground focus:ring-2 focus:ring-ring focus:border-transparent transition-all;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}
